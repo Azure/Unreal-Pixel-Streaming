@@ -1,0 +1,23 @@
+{
+	"version": 1,
+	"UseFrontend": false,
+	"UseMatchmaker": true,
+	"UseHTTPS": false,
+	"UseAuthentication": false,
+	"LogToFile": true,
+	"HomepageFile": "player.htm",
+	"AdditionalRoutes": {},
+	"EnableWebserver": true,
+	"matchmakerAddress": "",
+	"matchmakerPort": "9999",
+	"publicIp": "localhost",
+	"subscriptionId": "",
+	"resourceGroup": "",
+	"virtualMachineScaleSet": "",
+	"appInsightsInstrumentationKey": "",
+	"httpPort": 80,
+	"httpsPort": 443,
+	"streamerPort": 8888,
+	"unrealAppName": "PixelStreamingDemo",
+	"region": ""
+}
