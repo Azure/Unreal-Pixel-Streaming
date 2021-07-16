@@ -1,0 +1,21 @@
+{
+  "name": "cirrus-webserver",
+  "version": "0.0.1",
+  "description": "cirrus web server",
+  "scripts": {
+    "store_password": "node ./modules/authentication/db/store_password.js --usersFile=./modules/authentication/db/users.json",
+    "start": "npm install && node cirrus.js"
+  },
+  "dependencies": {
+    "applicationinsights": "1.8.8",
+    "bcryptjs": "^2.4.3",
+    "express": "^4.16.2",
+    "express-session": "^1.15.6",
+    "helmet": "^3.21.3",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0",
+    "ws": "^7.1.2",
+    "y18n": "^5.0.5",
+    "yargs": "^15.3.0"
+  }
+}
