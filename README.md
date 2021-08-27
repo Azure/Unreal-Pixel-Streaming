@@ -133,7 +133,7 @@ The Git location referenced in the deployment is stored in the [iac\region\varia
 
 Below are the configurations available to the Matchmaker, which a config.json file was added to the existing Matchmaker code to reduce hard coding in the Matchmaker.js file:
 
-```json
+```yaml
 {
   // The port clients connect to the Matchmaking service over HTTP
   "httpPort": 80,
@@ -168,7 +168,7 @@ Below are the configurations available to the Matchmaker, which a config.json fi
 
 Below are configs available to the Signaling Server in their config, some added by Microsoft for Azure:
 
-```json
+```yaml
 {
   "UseFrontend": false,
   "UseMatchmaker": true, // Set to true if using Matchmaker.
