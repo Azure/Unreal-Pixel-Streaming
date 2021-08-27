@@ -45,7 +45,7 @@ Important: Before cloning this repo you must install the LFS extension at: https
 
 This document goes through an overview on how to deploy Unreal Engine&#39;s Pixel Streaming technology in Azure at scale, which is a technology that Epic Games provides in their Unreal Engine to stream remotely deployed interactive 3D applications through a browser (i.e., computer/mobile) without the need for the connecting client to have GPU hardware. Additionally, this document will describe the customizations Azure Engineering has built on top of the existing Pixel Streaming solution to provide additional resiliency, logging/metrics and autoscaling specifically for production workloads in Azure. The additions built for Azure are released here on GitH, which consists of an end-to-end solution deployed via Terraform to spin up a multi-region deployment with only a few Terraform commands. The deployment has many configurations to tailor to your requirements such as which Azure region(s) to deploy to, the SKUs for each VM/GPUs, the size of the deployment, HTTP/HTTPs and autoscaling policies (node count &amp; percentage based).
 
-For a detailed overview of Pixel Streaming and architectures in Azure, see our documentation [here](unreal-pixel-streaming-in-azure.md). For a more simplified quick-start for the process on manually deploying to a single VM with Matchmaker and Signaling Server in Azure, see the Microsoft documentation [here](unreal-pixel-streaming-deploying.md). To jump directly to the documented steps for deploying this solution in Azure, click [here](#deployment).
+For a detailed overview of Pixel Streaming and architectures in Azure, see our documentation [here](https://docs.microsoft.com/en-us/gaming/azure/reference-architectures/unreal-pixel-streaming-in-azure). For a more simplified quick-start for the process on manually deploying to a single VM with Matchmaker and Signaling Server in Azure, see the Microsoft documentation [here](https://docs.microsoft.com/en-us/gaming/azure/reference-architectures/unreal-pixel-streaming-deploying). To jump directly to the documented steps for deploying this solution in Azure, click [here](#deployment).
 
 ## Additions Added by Microsoft
 
@@ -98,7 +98,7 @@ Below are the recommended compute SKUs for general usage of Pixel Streaming in A
 
 # Optimizing Pixel Streaming in Azure
 
-Be sure to check out the Pixel Streaming in Azure Overview [documentation](unreal-pixel-streaming-in-azure.md) to learn more about optimizing for Azure VM SKUs, performance and pricing optimizations.
+Be sure to check out the Pixel Streaming in Azure Overview [documentation](https://docs.microsoft.com/en-us/gaming/azure/reference-architectures/unreal-pixel-streaming-in-azure#optimizing-pixel-streaming-in-azure) to learn more about optimizing for Azure VM SKUs, performance and pricing optimizations.
 
 ## Recommendations for Further Optimizations
 
