@@ -2,7 +2,7 @@
 
 ### Important
 
-Important: Before cloning this repo you must install the LFS extension at: https://git-lfs.github.com/ and open a git/console command window and type git lfs install to initialize git-lfs. Then in your cloned folder, you need to run "git lfs install". There are large binaries in the repo, thus we needed to enable Git Large File Storage capabilities. 
+**Important:** Before cloning this repo you must install the LFS extension at: https://git-lfs.github.com/ and open a git/console command window and type git lfs install to initialize git-lfs. Then in your cloned folder, you need to run "git lfs install". There are large binaries in the repo, thus we needed to enable Git Large File Storage capabilities. Also, due to licensing we are unable to include `\Engine\Binaries\ThirdParty` dlls exported from Unreal for your app in this repo, so you'll need to copy your own `Binaries\` folder into the repo and check them in before the `PixelStreamingDemo.exe` app will run locally and remotely. See the [Unreal 3D App](#unreal-3d-app) section for details of this and other important steps.
  
 
 # Contents
@@ -133,7 +133,7 @@ The Git location referenced in the deployment is stored in the [iac\region\varia
 
 Below are the configurations available to the Matchmaker, which a config.json file was added to the existing Matchmaker code to reduce hard coding in the Matchmaker.js file:
 
-```json
+```yaml
 {
   // The port clients connect to the Matchmaking service over HTTP
   "httpPort": 80,
@@ -168,7 +168,7 @@ Below are the configurations available to the Matchmaker, which a config.json fi
 
 Below are configs available to the Signaling Server in their config, some added by Microsoft for Azure:
 
-```json
+```yaml
 {
   "UseFrontend": false,
   "UseMatchmaker": true, // Set to true if using Matchmaker.
@@ -201,7 +201,7 @@ The Unreal 3D app and dependencies reside in GitHub (Git-LFS enabled) under the 
 
 1. Your exported `<ProjectName>.exe` should replace `Unreal\PixelStreamingDemo.exe`
 2. `<ProjectName>\` folder associated with the `<ProjectName>.exe` should replace the `Unreal\PixelStreaming\` folder.
-3. Replace the ThirdParty folder of the repo with **your** ThirdParty folder (i.e., `\Engine\Binaries\ThirdParty\`), as these third-party dlls are specific to what was used in your 3D application. The existing ones were just what was used in the example app provided in the repo. Make sure you can click on your `<ProjectName>.exe' to run it locally in your cloned repo folder to ensure all dependencies are copied over. This is the only thing needed to be copied over from your own Engine\ folder to the repo.
+3. **Important:** Replace the Binaries folder of the repo with **your** Binaries folder that was generated when building your UE4 app (i.e., `\Engine\Binaries\`), as the third-party dlls and versions contained in the `\Engine\Binaries\ThirdParty` folder are specific to what was used in your 3D application. Due to licensing we are not able to include the .dlls in this repo, so it's important that you add them yourself. Make sure you then can click on your `<ProjectName>.exe' to run it locally sucessfully in your cloned repo folder to ensure all dependencies are copied over. This is the only thing needed to be copied over from your own Engine\ folder to the repo.
 4. **Nothing more is needed to copy** over unless you&#39;ve changed any player.htm or specific customizations to the MM or SS web servers. These changes must be merged with the Microsoft special customizations and **not replaced over our WebServer\ files** to ensure a correct merge.
 5. **Important:** Be sure to check in any code/app changes back into your forked repo as the Terraform deployment pulls from GitHub on your deployment and not your local resources.
 
