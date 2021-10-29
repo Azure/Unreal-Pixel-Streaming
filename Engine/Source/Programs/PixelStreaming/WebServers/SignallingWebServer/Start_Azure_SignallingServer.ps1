@@ -17,12 +17,12 @@ $peerConnectionOptions = "{ \""iceServers\"": [{\""urls\"": [\""stun:stun.l.goog
 $ProcessExe = "node.exe"
 
 # defaults to UE 4.27 path where cirrus is 2 directories higher in the path tree
-$cirrusPath = "../../cirrus"
+$cirrusPath = "../../cirrus.js"
 
 $exists = Test-Path -Path $cirrusPath
 if(!$exists){
     # fall back to pathing used for 4.26 and earlier
-    $cirrusPath = "cirrus"
+    $cirrusPath = "cirrus.js"
 }
 
 $Arguments = @($cirrusPath, "--peerConnectionOptions=""$peerConnectionOptions""", "--publicIp=$PublicIp")
