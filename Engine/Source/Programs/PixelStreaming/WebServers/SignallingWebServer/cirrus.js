@@ -112,7 +112,7 @@ var serverPublicIp;
 // `clientConfig` is send to Streamer and Players
 // Example of STUN server setting
 // let clientConfig = {peerConnectionOptions: { 'iceServers': [{'urls': ['stun:34.250.222.95:19302']}] }};
-var clientConfig = { type: 'config', peerConnectionOptions: {} };
+var clientConfig = { type: 'config', peerConnectionOptions: {}, backCompatMode: false };
 
 // Parse public server address from command line
 // --publicIp <public address>
@@ -153,6 +153,11 @@ try {
 	if (typeof config.matchmakerRetryInterval != 'undefined') {
 		matchmakerRetryInterval = config.matchmakerRetryInterval;
 	}
+
+	if (typeof config.backCompatMode != 'undefined'){
+		clientConfig.backCompatMode = config.backCompatMode
+	}
+
 } catch (e) {
 	console.error(e);
 
