@@ -23,6 +23,8 @@ Param (
   [string] $pixel_stream_application_name = "PixelStreamingDemo",
   [Parameter(Mandatory = $false, HelpMessage = "The frames per second of the 3D app, default -1 which reverts to default behavior of UE")]
   [int] $fps = -1,
+  [Parameter(Mandatory = $false, HelpMessage = "The Major.Minor version of Unreal Engine used to create the 3D app. Defaults to 4.27")]
+  [float] $unreal_version = 4.27,
   [Parameter(Mandatory = $True, HelpMessage = "git path")]
   [String]$gitpath = "",
   [Parameter(Mandatory = $False, HelpMessage = "github access token")]
@@ -215,6 +217,7 @@ for ($instanceNum = 1; $instanceNum -le $instancesPerNode; $instanceNum++) {
     $vmssConfigJson.streamerPort = ($streamingPort + ($instanceNum - 1))
     $vmssConfigJson.unrealAppName = $pixel_stream_application_name
     $vmssConfigJson.region = $deploymentLocation
+    $vmssConfigJson.unrealVersion = $unreal_version
 
     $vmssConfigJson | ConvertTo-Json | set-content "config.json"
     $vmssConfigJson = (Get-Content  "config.json" -Raw) | ConvertFrom-Json

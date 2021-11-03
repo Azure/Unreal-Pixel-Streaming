@@ -362,7 +362,7 @@ const ToClientMessageType = {
 };
 
 function setupWebRtcPlayer(htmlElement, config) {
-	webRtcPlayerObj = new webRtcPlayer({ peerConnectionOptions: config.peerConnectionOptions });
+	webRtcPlayerObj = new webRtcPlayer({ peerConnectionOptions: config.peerConnectionOptions, unrealVersion: config.unrealVersion });
 	htmlElement.appendChild(webRtcPlayerObj.video);
 	htmlElement.appendChild(freezeFrameOverlay);
 

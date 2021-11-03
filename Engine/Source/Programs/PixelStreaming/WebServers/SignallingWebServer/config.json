@@ -19,5 +19,6 @@
 	"httpsPort": 443,
 	"streamerPort": 8888,
 	"unrealAppName": "PixelStreamingDemo",
-	"region": ""
+	"region": "",
+	"unrealVersion": 4.27
 }

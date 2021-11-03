@@ -7,24 +7,22 @@
 
 # Contents
 
+- [Pixel Streaming in Azure](#pixel-streaming-in-azure)
+    - [Important](#important)
+- [Contents](#contents)
 - [Overview](#overview)
-  - [Overview of Unreal Engine&#39;s Pixel Streaming](#overview-of-unreal-engines-pixel-streaming)
   - [Additions Added by Microsoft](#additions-added-by-microsoft)
 - [Architecture](#architecture)
-  - [Matchmaker (Redirects to available servers)](#matchmaker-redirects-to-available-servers)
-  - [Signaling Web Server (WebRTC streaming server)](#signaling-web-server-webrtc-streaming-server)
-  - [Unreal 3D Pixel Streaming App](#unreal-3d-pixel-streaming-app)
   - [User Flow](#user-flow)
 - [Azure SKU Recommendations](#azure-sku-recommendations)
 - [Optimizing Pixel Streaming in Azure](#optimizing-pixel-streaming-in-azure)
-  - [Performance Optimizations](#performance-optimizations)
-  - [Price Optimizations](#price-optimizations)
   - [Recommendations for Further Optimizations](#recommendations-for-further-optimizations)
 - [Configurations](#configurations)
   - [Terraform Configuration](#terraform-configuration)
   - [Deployment Script Configurations](#deployment-script-configurations)
   - [Matchmaker Configuration](#matchmaker-configuration)
   - [Signaling Server Configuration](#signaling-server-configuration)
+    - [TURN / STUN Servers](#turn--stun-servers)
   - [Unreal 3D App](#unreal-3d-app)
   - [Autoscaling Configuration](#autoscaling-configuration)
   - [Player HTML &amp; Custom Event Configuration](#player-html--custom-event-configuration)
@@ -184,7 +182,8 @@ Below are configs available to the Signaling Server in their config, some added 
   "subscriptionId": "", // The Azure subscription -- set by Terraform.
   "resourceGroup": "", // Azure RG -- set by Terraform.
   "virtualMachineScaleSet": "", // Azure VMSS -- set by Terraform.
-  "appInsightsId": "" // Azure App Insights ID for logging/metrics -- set by Terraform.
+  "appInsightsId": "", // Azure App Insights ID for logging/metrics -- set by Terraform.
+  "unrealVersion: 4.27 // Major/Minor version of the Unreal Engine used with the application.
 }
 ```
 
