@@ -118,14 +118,17 @@
         };
 
         handleCreateOffer = function (pc) {
-            pc.createOffer(self.sdpConstraints).then(function (offer) {
+            pc.createOffer(self.sdpConstraints).then(function (offer) {         
+                offer.sdp = offer.sdp.replace("useinbandfec=1", "useinbandfec=1;stereo=1;maxaveragebitrate=128000");
             	pc.setLocalDescription(offer);
             	if (self.onWebRtcOffer) {
             		// (andriy): increase start bitrate from 300 kbps to 20 mbps and max bitrate from 2.5 mbps to 100 mbps
                     // (100 mbps means we don't restrict encoder at all)
                     // after we `setLocalDescription` because other browsers are not c happy to see google-specific config
-            		offer.sdp = offer.sdp.replace(/(a=fmtp:\d+ .*level-asymmetry-allowed=.*)\r\n/gm, "$1;x-google-start-bitrate=15000;x-google-max-bitrate=100000\r\n");
-            		self.onWebRtcOffer(offer);
+            		offer.sdp = offer.sdp.replace(/(a=fmtp:\d+ .*level-asymmetry-allowed=.*)\r\n/gm, "$1;x-google-start-bitrate=15000;x-google-max-bitrate=100000\r\n");		                     
+                    // a=extmap-allow-mixed is passed by default from Chrome 94 onwards, for Pixel Streaming pre 4.27 this must be stripped out as those versions use M70, which has no idea what extmap-allow-mixed means.
+                    offer.sdp = offer.sdp.replace(/(a=extmap-allow-mixed)\r\n/gm, "");                
+                    self.onWebRtcOffer(offer);
                 }
             },
             function () { console.warn("Couldn't create offer") });
