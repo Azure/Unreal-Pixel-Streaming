@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TpsData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <Name>Popper.js v1.14.3</Name>
-  <Location>/Engine/Source/Programs/PixelStreaming/WebServers/</Location>
+  <Location>/Samples/PixelStreaming/WebServers/</Location>
   <Function>A requirement to using Bootstrap.</Function>
   <Eula>https://github.com/FezVrasta/popper.js/blob/master/LICENSE.md</Eula>
   <RedistributeTo>

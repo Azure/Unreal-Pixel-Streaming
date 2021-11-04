@@ -25,13 +25,13 @@ body{
 	z-index: 10;
 }
 
-#statsContainer{
+.statsContainer {
 	background-color: rgba(0,0,0,0.8);
 	text-align: left;
-	display: none;
+	display: block;
 }
 
-#stats{
+.stats {
 	font-size: 14px;
 	font-weight: bold;
 	padding: 6px;
@@ -90,19 +90,55 @@ video{
 	color: var(--colour4);
 }
 
+.overlay-shown > #overlaySettings {
+	padding: 50px 4px 4px 4px;
+	display: block;
+}
+
+.overlay-shown > div > #overlayButton {
+	transform: rotate(-135deg);
+	-webkit-transform: rotate(-135deg); /* Safari */
+	-moz-transform: rotate(-135deg); /* Firefox */
+	-ms-transform: rotate(-135deg); /* IE */
+	-o-transform: rotate(-135deg); /* Opera */
+}
+
 #overlayButton:hover{
-	cursor:pointer;
+	cursor: pointer;
 }
 
 #overlayButton{
+	transition-duration: 250ms;
+	float: right;
 	text-align: right;
 	font-size: 40px;
 }
 
+#qualityStatus{
+	float: left;
+	font-size: 37px;
+	padding-right: 4px;
+}
+
 #overlaySettings{
-	width: 300px;
-	padding: 4px;
+	width: 400px;
 	display: none;
+}
+
+.greyStatus {
+	color: grey;
+}
+
+.limeStatus {
+	color: lime;
+}
+
+.orangeStatus {
+	color: orange;
+}
+
+.redStatus {
+	color: red;
 }
 
 #videoMessageOverlay{

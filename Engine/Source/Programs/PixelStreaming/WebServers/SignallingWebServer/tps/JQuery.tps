@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TpsData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <Name>JQuery</Name>
-  <Location>/Engine/Source/Programs/PixelStreaming/WebServers/</Location>
+  <Location>/Samples/PixelStreaming/WebServers/</Location>
   <Function>This is a requirement to using Bootstrap, providing access to the DOM in the browser for easier and more advanced client side interactions and UI. Used for Project Cirrus.</Function>
   <Eula>https://github.com/jquery/jquery/blob/master/LICENSE.txt; https://js.foundation/pdf/ip-policy.pdf</Eula>
   <RedistributeTo>

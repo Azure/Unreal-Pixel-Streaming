@@ -25,14 +25,14 @@ const defaultConfig = {
 	UseHTTPS: false,
 	UseAuthentication: false,
 	LogToFile: true,
-	HomepageFile: 'player.htm',
+	HomepageFile: 'player.html',
 	AdditionalRoutes: new Map(),
 	EnableWebserver: true,
 	enableLifecycleManagement: false
 };
 
 const argv = require('yargs').argv;
-var configFile = (typeof argv.configFile != 'undefined') ? argv.configFile.toString() : '.\\config.json';
+var configFile = (typeof argv.configFile != 'undefined') ? argv.configFile.toString() : path.join(__dirname, 'config.json');
 console.log(`configFile ${configFile}`);
 const config = require('./modules/config.js').init(configFile, defaultConfig);
 
@@ -48,14 +48,9 @@ if(config.enableLifecycleManagement) {
 	require('./modules/lifecycleCheck.js').init(config, ai);
 }
 /////////////////////////////////////////////////////////////////////
-
-
 console.log("Config: " + JSON.stringify(config, null, '\t'));
 
 var http = require('http').Server(app);
-
-var sessionMonitor = require('./modules/sessionMonitor.js');
-sessionMonitor.init();
 
 if (config.UseHTTPS) {
 	//HTTPS certificate details
@@ -94,11 +89,11 @@ if (config.UseFrontend) {
 	const httpsClient = require('./modules/httpsClient.js');
 	var webRequest = new httpsClient();
 } else {
-	var httpPort = config.httpPort;
-	var httpsPort = config.httpsPort;
+	var httpPort = config.HttpPort;
+	var httpsPort = config.HttpsPort;
 }
 
-var streamerPort = config.streamerPort; // port to listen to Streamer connections
+var streamerPort = config.StreamerPort; // port to listen to Streamer connections
 
 var matchmakerAddress = '127.0.0.1';
 var matchmakerPort = 9999;
@@ -117,41 +112,43 @@ var clientConfig = { type: 'config', peerConnectionOptions: {} };
 // Parse public server address from command line
 // --publicIp <public address>
 try {
-	if (typeof config.publicIp != 'undefined') {
-		serverPublicIp = config.publicIp.toString();
+	if (typeof config.PublicIp != 'undefined') {
+		serverPublicIp = config.PublicIp.toString();
 	}
 
-	if (typeof config.httpPort != 'undefined') {
-		httpPort = config.httpPort;
+	if (typeof config.HttpPort != 'undefined') {
+		httpPort = config.HttpPort;
 	}
 
-	if (typeof config.httpsPort != 'undefined') {
-		httpsPort = config.httpsPort;
+	if (typeof config.HttpsPort != 'undefined') {
+		httpsPort = config.HttpsPort;
 	}
 
-	if (typeof config.streamerPort != 'undefined') {
-		streamerPort = config.streamerPort;
+	if (typeof config.StreamerPort != 'undefined') {
+		streamerPort = config.StreamerPort;
 	}
 
-	if (typeof config.frontendUrl != 'undefined') {
-		FRONTEND_WEBSERVER = config.frontendUrl;
+	if (typeof config.FrontendUrl != 'undefined') {
+		FRONTEND_WEBSERVER = config.FrontendUrl;
 	}
 
 	if (typeof config.peerConnectionOptions != 'undefined') {
 		clientConfig.peerConnectionOptions = JSON.parse(config.peerConnectionOptions);
 		console.log(`peerConnectionOptions = ${JSON.stringify(clientConfig.peerConnectionOptions)}`);
+	} else {
+		console.log("No peerConnectionConfig")
 	}
 
-	if (typeof config.matchmakerAddress != 'undefined') {
-		matchmakerAddress = config.matchmakerAddress;
+	if (typeof config.MatchmakerAddress != 'undefined') {
+		matchmakerAddress = config.MatchmakerAddress;
 	}
 
-	if (typeof config.matchmakerPort != 'undefined') {
-		matchmakerPort = config.matchmakerPort;
+	if (typeof config.MatchmakerPort != 'undefined') {
+		matchmakerPort = config.MatchmakerPort;
 	}
 
-	if (typeof config.matchmakerRetryInterval != 'undefined') {
-		matchmakerRetryInterval = config.matchmakerRetryInterval;
+	if (typeof config.MatchmakerRetryInterval != 'undefined') {
+		matchmakerRetryInterval = config.MatchmakerRetryInterval;
 	}
 } catch (e) {
 	console.error(e);
@@ -264,8 +261,9 @@ if (config.UseHTTPS) {
 	});
 }
 
-let WebSocket = require('ws');
+console.logColor(logging.Cyan, `Running Cirrus - The Pixel Streaming reference implementation signalling server for Unreal Engine 4.27.`);
 
+let WebSocket = require('ws');
 let streamerServer = new WebSocket.Server({ port: streamerPort, backlog: 1 });
 console.logColor(logging.Green, `WebSocket listening to Streamer connections on :${streamerPort}`)
 let streamer; // WebSocket connected to Streamer
@@ -294,6 +292,13 @@ streamerServer.on('connection', function (ws, req) {
 
 			let playerId = msg.playerId;
 			delete msg.playerId; // no need to send it to the player
+
+			// Convert incoming playerId to a string if it is an integer, if needed. (We support receiving it as an int or string).
+			if(playerId && typeof playerId === 'number')
+			{
+				playerId = playerId.toString();
+			}
+
 			let player = players.get(playerId);
 			if (!player) {
 				console.log(`dropped message ${msg.type} as the player ${playerId} is not found`);
@@ -358,7 +363,7 @@ playerServer.on('connection', function (ws, req) {
 		return;
 	}
 
-	let playerId = ++nextPlayerId;
+	let playerId = (++nextPlayerId).toString();
 	console.log(`player ${playerId} (${req.connection.remoteAddress}) connected`);
 	players.set(playerId, { ws: ws, id: playerId });
 	ai.logMetric("SSPlayerConnected", 1);	//////// AZURE ////////
@@ -444,17 +449,14 @@ playerServer.on('connection', function (ws, req) {
 
 
 	function onPlayerDisconnected() {
-
 		try {
-			console.log("calling onPlayerDisconnected...");
 			players.delete(playerId);
 			streamer.send(JSON.stringify({type: 'playerDisconnected', playerId: playerId}));
 			sendPlayerDisconnectedToFrontend();
 			sendPlayerDisconnectedToMatchmaker();
 			sendPlayersCount();
-			console.log("CALLED onPlayerDisconnected");
 
-			ai.logMetric("SSPlayerDisconnected", 1); //////// AZURE ////////
+			ai.logMetric("SSPlayerDisconnected", 1); //////// AZURE ///////
 		} catch(err) {
 			console.logColor(loggin.Red, `ERROR:: onPlayerDisconnected error: ${err.message}`);
 		}
@@ -504,7 +506,6 @@ if (config.UseMatchmaker) {
 	matchmaker.on('connect', function() {
 		console.log(`Cirrus connected to Matchmaker ${matchmakerAddress}:${matchmakerPort}`);
 
-		//////////////////////////// MSFT Improvement  ////////////////////////////
 		// message.playerConnected is a new variable sent from the SS to help track whether or not a player 
 		// is already connected when a 'connect' message is sent (i.e., reconnect). This happens when the MM
 		// and the SS get disconnected unexpectedly (was happening often at scale for some reason).
@@ -521,10 +522,8 @@ if (config.UseMatchmaker) {
 			address: typeof serverPublicIp === 'undefined' ? '127.0.0.1' : serverPublicIp,
 			port: httpPort,
 			ready: streamer && streamer.readyState === 1,
-			playerConnected: playerConnected,
-			version: config.version
+			playerConnected: playerConnected
 		};
-		//////////////////////////// MSFT Improvement  ////////////////////////////
 
 		matchmaker.write(JSON.stringify(message));
 		ai.logMetric("SSMatchmakerConnected", 1);			//////// AZURE ////////
@@ -577,14 +576,11 @@ if (config.UseMatchmaker) {
 	registerMMKeepAlive();
 }
 
-
-
 //Keep trying to send gameSessionId in case the server isn't ready yet
 function sendGameSessionData() {
 	//If we are not using the frontend web server don't try and make requests to it
 	if (!config.UseFrontend)
 		return;
-
 	webRequest.get(`${FRONTEND_WEBSERVER}/server/requestSessionId`,
 		function (response, body) {
 			if (response.statusCode === 200) {
@@ -613,7 +609,6 @@ function sendUserSessionData(serverPort) {
 	//If we are not using the frontend web server don't try and make requests to it
 	if (!config.UseFrontend)
 		return;
-
 	webRequest.get(`${FRONTEND_WEBSERVER}/server/requestUserSessionId?gameSessionId=${gameSessionId}&serverPort=${serverPort}&appName=${querystring.escape(clientConfig.AppName)}&appDescription=${querystring.escape(clientConfig.AppDescription)}${(typeof serverPublicIp === 'undefined' ? '' : '&serverHost=' + serverPublicIp)}`,
 		function (response, body) {
 			if (response.statusCode === 410) {
@@ -643,9 +638,7 @@ function sendServerDisconnect() {
 	//If we are not using the frontend web server don't try and make requests to it
 	if (!config.UseFrontend)
 		return;
-
 	try {
-		console.log("calling sendServerDisconnect...");
 		webRequest.get(`${FRONTEND_WEBSERVER}/server/serverDisconnected?gameSessionId=${gameSessionId}&appName=${querystring.escape(clientConfig.AppName)}`,
 			function (response, body) {
 				if (response.statusCode === 200) {
@@ -666,7 +659,6 @@ function sendServerDisconnect() {
 					console.error(err);
 				}
 			});
-		console.log("calling sendServerDisconnect...");
 	} catch(err) {
 		console.logColor(logging.Red, `ERROR::: sendServerDisconnect error: ${err.message}`);
 	}
@@ -676,9 +668,7 @@ function sendPlayerConnectedToFrontend() {
 	//If we are not using the frontend web server don't try and make requests to it
 	if (!config.UseFrontend)
 		return;
-
 	try {
-		console.log("calling sendPlayerConnectedToFrontend...");
 		webRequest.get(`${FRONTEND_WEBSERVER}/server/clientConnected?gameSessionId=${gameSessionId}&appName=${querystring.escape(clientConfig.AppName)}`,
 			function (response, body) {
 				if (response.statusCode === 200) {
@@ -699,7 +689,6 @@ function sendPlayerConnectedToFrontend() {
 					console.error(err);
 				}
 			});
-		console.log("CALLED sendPlayerConnectedToFrontend");
 	} catch(err) {
 		console.logColor(logging.Red, `ERROR::: sendPlayerConnectedToFrontend error: ${err.message}`);
 	}
@@ -710,7 +699,6 @@ function sendPlayerDisconnectedToFrontend() {
 	if (!config.UseFrontend)
 		return;
 	try {
-		console.log("calling sendPlayerDisconnectedToFrontend...");
 		webRequest.get(`${FRONTEND_WEBSERVER}/server/clientDisconnected?gameSessionId=${gameSessionId}&appName=${querystring.escape(clientConfig.AppName)}`,
 			function (response, body) {
 				if (response.statusCode === 200) {
@@ -733,7 +721,6 @@ function sendPlayerDisconnectedToFrontend() {
 					console.error(err);
 				}
 			});
-		console.log("CALLED sendPlayerDisconnectedToFrontend");
 	} catch(err) {
 		console.logColor(logging.Red, `ERROR::: sendPlayerDisconnectedToFrontend error: ${err.message}`);
 	}
@@ -742,14 +729,11 @@ function sendPlayerDisconnectedToFrontend() {
 function sendStreamerConnectedToMatchmaker() {
 	if (!config.UseMatchmaker)
 		return;
-
 	try {
-		console.log("sendStreamerConnectedToMatchmaker started...");
 		message = {
 			type: 'streamerConnected'
 		};
 		matchmaker.write(JSON.stringify(message));
-		console.log("sendStreamerConnectedToMatchmaker FINISHED");
 	} catch (err) {
 		console.logColor(logging.Red, `ERROR sending streamerConnected: ${err.message}`);
 	}
@@ -758,17 +742,14 @@ function sendStreamerConnectedToMatchmaker() {
 function sendStreamerDisconnectedToMatchmaker() {
 	if (!config.UseMatchmaker)
 	{
-		console.log("WARNING:::sendStreamerDisconnectedToMatchmaker not using matchmaker for some reason???");
 		return;
 	}
 
 	try {
-		console.log("sendStreamerDisconnectedToMatchmaker started...");
 		message = {
 			type: 'streamerDisconnected'
 		};
 		matchmaker.write(JSON.stringify(message));	
-		console.log("sendStreamerDisconnectedToMatchmaker FINISHED");
 	} catch (err) {
 		console.logColor(logging.Red, `ERROR sending streamerDisconnected: ${err.message}`);
 	}
@@ -779,14 +760,11 @@ function sendStreamerDisconnectedToMatchmaker() {
 function sendPlayerConnectedToMatchmaker() {
 	if (!config.UseMatchmaker)
 		return;
-	
 	try {
-		console.log("sendPlayerConnectedToMatchmaker started...");
 		message = {
 			type: 'clientConnected'
 		};
 		matchmaker.write(JSON.stringify(message));
-		console.log("sendPlayerConnectedToMatchmaker FINISHED");
 	} catch (err) {
 		console.logColor(logging.Red, `ERROR sending clientConnected: ${err.message}`);
 	}
@@ -797,14 +775,11 @@ function sendPlayerConnectedToMatchmaker() {
 function sendPlayerDisconnectedToMatchmaker() {
 	if (!config.UseMatchmaker)
 		return;
-
 	try {
-		console.log("sendPlayerDisconnectedToMatchmaker started...");
 		message = {
 			type: 'clientDisconnected'
 		};
 		matchmaker.write(JSON.stringify(message));
-		console.log("sendPlayerDisconnectedToMatchmaker FINISHED");
 	} catch (err) {
 		console.logColor(logging.Red, `ERROR sending clientDisconnected: ${err.message}`);
 	}
