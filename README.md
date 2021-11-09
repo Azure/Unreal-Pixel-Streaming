@@ -3,28 +3,27 @@
 ### Important
 
 **Important:** Before cloning this repo you must install the LFS extension at: https://git-lfs.github.com/ and open a git/console command window and type git lfs install to initialize git-lfs. Then in your cloned folder, you need to run "git lfs install". There are large binaries in the repo, thus we needed to enable Git Large File Storage capabilities. Also, due to licensing we are unable to include `\Engine\Binaries\ThirdParty` dlls exported from Unreal for your app in this repo, so you'll need to copy your own `Binaries\` folder into the repo and check them in before the `PixelStreamingDemo.exe` app will run locally and remotely. See the [Unreal 3D App](#unreal-3d-app) section for details of this and other important steps.
- 
+
+**Important:** The main branch of this repo supports 3D Applications targeting Unreal Engine 4.27. If your application uses the previous 4.26 version of Unreal Engine please change the branch to `ue-4.26` or use the `v4.26` release tag.  
 
 # Contents
 
+- [Pixel Streaming in Azure](#pixel-streaming-in-azure)
+    - [Important](#important)
+- [Contents](#contents)
 - [Overview](#overview)
-  - [Overview of Unreal Engine&#39;s Pixel Streaming](#overview-of-unreal-engines-pixel-streaming)
   - [Additions Added by Microsoft](#additions-added-by-microsoft)
 - [Architecture](#architecture)
-  - [Matchmaker (Redirects to available servers)](#matchmaker-redirects-to-available-servers)
-  - [Signaling Web Server (WebRTC streaming server)](#signaling-web-server-webrtc-streaming-server)
-  - [Unreal 3D Pixel Streaming App](#unreal-3d-pixel-streaming-app)
   - [User Flow](#user-flow)
 - [Azure SKU Recommendations](#azure-sku-recommendations)
 - [Optimizing Pixel Streaming in Azure](#optimizing-pixel-streaming-in-azure)
-  - [Performance Optimizations](#performance-optimizations)
-  - [Price Optimizations](#price-optimizations)
   - [Recommendations for Further Optimizations](#recommendations-for-further-optimizations)
 - [Configurations](#configurations)
   - [Terraform Configuration](#terraform-configuration)
   - [Deployment Script Configurations](#deployment-script-configurations)
   - [Matchmaker Configuration](#matchmaker-configuration)
   - [Signaling Server Configuration](#signaling-server-configuration)
+    - [TURN / STUN Servers](#turn--stun-servers)
   - [Unreal 3D App](#unreal-3d-app)
   - [Autoscaling Configuration](#autoscaling-configuration)
   - [Player HTML &amp; Custom Event Configuration](#player-html--custom-event-configuration)
