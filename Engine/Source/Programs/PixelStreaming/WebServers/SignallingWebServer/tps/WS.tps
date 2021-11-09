@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TpsData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <Name>WS</Name>
-  <Location>//UE4/Main/Engine/Source/Programs/PixelStreaming/WebServers/SignallingWebServer/</Location>
+  <Location>/Samples/PixelStreaming/WebServers/SignallingWebServer/</Location>
   <Function>It's used by SignallingWebServer (based on Node.js web-server) that is part of our PixelStreaming project.We add a dependency to WS library to Node.js configuration and it's downloaded automatically.</Function>
   <Eula>https://github.com/websockets/ws/blob/HEAD/LICENSE</Eula>
   <RedistributeTo>

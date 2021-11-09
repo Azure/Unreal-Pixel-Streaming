@@ -25,7 +25,7 @@ if(!$exists){
     $cirrusPath = "cirrus.js"
 }
 
-$Arguments = @($cirrusPath, "--peerConnectionOptions=""$peerConnectionOptions""", "--publicIp=$PublicIp")
+$Arguments = @($cirrusPath, "--peerConnectionOptions=""$peerConnectionOptions""", "--PublicIp=$PublicIp")
 
 # Add arguments passed to script to Arguments for executable
 $Arguments += $args

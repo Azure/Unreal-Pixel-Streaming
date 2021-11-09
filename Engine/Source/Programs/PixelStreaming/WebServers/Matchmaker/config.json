@@ -1,8 +1,8 @@
 {
-	"version": 1,
-	"httpPort": 80,
+	"HttpPort": 80,
 	"UseHTTPS": false,
-	"matchmakerPort": 9999,
+	"MatchmakerPort": 9999,
+	"LogToFile": true,
 	"enableAutoScale": true,
 	"instancesPerNode": 1,
 	"instanceCountBuffer": 1,

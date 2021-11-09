@@ -11,10 +11,10 @@ var enableRESTAPI = true;
 // Added a config file for Matchmaker (MM)
 const defaultConfig = {
 	// The port clients connect to the matchmaking service over HTTP
-	httpPort: 90,
+	HttpPort: 90,
 	UseHTTPS: false,
 	// The matchmaking port the signaling service connects to the matchmaker
-	matchmakerPort: 9999,
+	MatchmakerPort: 9999,
 
 	/////////////////////////////// AZURE ///////////////////////////////	
 	// The amount of instances deployed per node, to be used in the autoscale policy (i.e., 1 unreal app running per GPU VM) -- FUTURE
@@ -52,7 +52,6 @@ var configFile = (typeof argv.configFile != 'undefined') ? argv.configFile.toStr
 console.log(`configFile ${configFile}`);
 const config = require('./modules/config.js').init(configFile, defaultConfig);
 console.log("Config: " + JSON.stringify(config, null, '\t'));
-///////////////////////////////////////////////////////////////////////////
 
 const express = require('express');
 var cors = require('cors');
@@ -66,6 +65,7 @@ logging.RegisterConsoleLogger();
 if (config.LogToFile) {
 	logging.RegisterFileLogger('./logs');
 }
+
 
 /////////////////////////////// AZURE ///////////////////////////////
 // Initialize the Azure module for scale and metric functionality
@@ -86,9 +86,6 @@ app.get('/ping', (req, res) => {
 	res.send('ping');
 });
 /////////////////////////////////////////////////////////////////////
-
-
-
 // A list of all the Cirrus server which are connected to the Matchmaker.
 var cirrusServers = new Map();
 
@@ -96,20 +93,18 @@ var cirrusServers = new Map();
 // Parse command line.
 //
 
-if (typeof argv.httpPort != 'undefined') {
-	config.httpPort = argv.httpPort;
+if (typeof argv.HttpPort != 'undefined') {
+	config.HttpPort = argv.HttpPort;
 }
-if (typeof argv.matchmakerPort != 'undefined') {
-	config.matchmakerPort = argv.matchmakerPort;
+if (typeof argv.MatchmakerPort != 'undefined') {
+	config.MatchmakerPort = argv.MatchmakerPort;
 }
 
-http.listen(config.httpPort, () => {
-    console.log('HTTP listening on *:' + config.httpPort);
+http.listen(config.HttpPort, () => {
+    console.log('HTTP listening on *:' + config.HttpPort);
 });
 
 
-//////////////////////////// MSFT Improvement  ////////////////////////////	
-// Added HTTPS code for Matchmaker from SS (due to some corporate policies requiring it)
 if (config.UseHTTPS) {
 	//HTTPS certificate details
 	const options = {
@@ -142,8 +137,6 @@ if (config.UseHTTPS) {
 		console.log('Https listening on 443');
 	});
 }
-///////////////////////////////////////////////////////////////////////////
-
 
 // No servers are available so send some simple JavaScript to the client to make
 // it retry after a short period of time.
@@ -167,7 +160,6 @@ function getAvailableCirrusServer() {
 	for (cirrusServer of cirrusServers.values()) {
 		if (cirrusServer.numConnectedClients === 0 && cirrusServer.ready === true) {
 
-			//////////////////////////// MSFT Improvement  ////////////////////////////	
 			// Check if we had at least 45 seconds since the last redirect, avoiding the 
 			// chance of redirecting 2+ users to the same SS before they click Play.
 			if( cirrusServer.lastRedirect ) {
@@ -175,7 +167,6 @@ function getAvailableCirrusServer() {
 					continue;
 			}
 			cirrusServer.lastRedirect = Date.now();
-			///////////////////////////////////////////////////////////////////////////
 
 			return cirrusServer;
 		}
@@ -254,12 +245,10 @@ const matchmaker = net.createServer((connection) => {
 				address: message.address,
 				port: message.port,
 				numConnectedClients: 0,
-				lastPingReceived: Date.now(),
-				version: message.version
+				lastPingReceived: Date.now()
 			};
 			cirrusServer.ready = message.ready === true;
 
-			//////////////////////////// MSFT Improvement  ////////////////////////////	
 			// Handles disconnects between MM and SS to not add dupes with numConnectedClients = 0 and redirect users to same SS
 			// Check if player is connected and doing a reconnect. message.playerConnected is a new variable sent from the SS to
 			// help track whether or not a player is already connected when a 'connect' message is sent (i.e., reconnect).
@@ -272,7 +261,7 @@ const matchmaker = net.createServer((connection) => {
 
 			// if a duplicate server with the same address isn't found -- add it to the map as an available server to send users to.
 			if (!server || server.size <= 0) {
-				console.log(`Adding connection for ${cirrusServer.address.split(".")[0]} with playerConnected: ${message.playerConnected} and version: ${message.version}`)
+				console.log(`Adding connection for ${cirrusServer.address.split(".")[0]} with playerConnected: ${message.playerConnected}`)
 				cirrusServers.set(connection, cirrusServer);
             } else {
 				console.log(`RECONNECT: cirrus server address ${cirrusServer.address.split(".")[0]} already found--replacing. playerConnected: ${message.playerConnected}`)
@@ -292,8 +281,6 @@ const matchmaker = net.createServer((connection) => {
 				ai.logMetric("DuplicateCirrusConnection", 1);
 				ai.logEvent("DuplicateCirrusConnection", message.address);
 			}
-			///////////////////////////////////////////////////////////////////////////
-
 		} else if (message.type === 'streamerConnected') {
 			// The stream connects to a Cirrus server and so is ready to be used
 			cirrusServer = cirrusServers.get(connection);
@@ -353,7 +340,7 @@ const matchmaker = net.createServer((connection) => {
 				/////////////////////////////// AZURE ///////////////////////////////	
 				ai.logMetric("ClientDisconnected", 1);
 				ai.logEvent("ClientDisconnected", cirrusServer.address);
-			} else {				
+			} else {
 				/////////////////////////////// AZURE ///////////////////////////////	
 				ai.logMetric("CirrusServerUndefined", 1);
 				ai.logEvent("CirrusServerUndefined", `No cirrus server found on client disconnect: ${connection.remoteAddress}`);
@@ -364,7 +351,7 @@ const matchmaker = net.createServer((connection) => {
 			cirrusServer = cirrusServers.get(connection);
 			if(cirrusServer) {
 				cirrusServer.lastPingReceived = Date.now();
-			} else {				
+			} else {
 				/////////////////////////////// AZURE ///////////////////////////////	
 				ai.logMetric("CirrusServerUndefined", 1);
 				ai.logEvent("CirrusServerUndefined", `No cirrus server found on client disconnect: ${connection.remoteAddress}`);
@@ -406,8 +393,8 @@ const matchmaker = net.createServer((connection) => {
 	});
 });
 
-matchmaker.listen(config.matchmakerPort, () => {
-	console.log('Matchmaker listening on *:' + config.matchmakerPort);
+matchmaker.listen(config.MatchmakerPort, () => {
+	console.log('Matchmaker listening on *:' + config.MatchmakerPort);
 });
 
 var scaleEvalRegistered = false;

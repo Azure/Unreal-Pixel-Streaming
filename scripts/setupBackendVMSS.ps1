@@ -208,11 +208,11 @@ for ($instanceNum = 1; $instanceNum -le $instancesPerNode; $instanceNum++) {
     $vmssConfigJson.subscriptionId = $subscription_id
     $vmssConfigJson.virtualMachineScaleSet = $vmss_name
     $vmssConfigJson.appInsightsInstrumentationKey = $application_insights_key
-    $vmssConfigJson.matchmakerAddress = $mm_lb_fqdn
-    $vmssConfigJson.publicIp = $thispublicip
-    $vmssConfigJson.httpPort = ($defaultHttpPort + ($instanceNum - 1))
-    $vmssConfigJson.httpsPort = ($defaultHttpsPort + ($instanceNum - 1))
-    $vmssConfigJson.streamerPort = ($streamingPort + ($instanceNum - 1))
+    $vmssConfigJson.MatchmakerAddress = $mm_lb_fqdn
+    $vmssConfigJson.PublicIp = $thispublicip
+    $vmssConfigJson.HttpPort = ($defaultHttpPort + ($instanceNum - 1))
+    $vmssConfigJson.HttpsPort = ($defaultHttpsPort + ($instanceNum - 1))
+    $vmssConfigJson.StreamerPort = ($streamingPort + ($instanceNum - 1))
     $vmssConfigJson.unrealAppName = $pixel_stream_application_name
     $vmssConfigJson.region = $deploymentLocation
 
