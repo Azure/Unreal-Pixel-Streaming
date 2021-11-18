@@ -167,8 +167,7 @@ resource "azurerm_windows_virtual_machine" "vm" {
   }
 
   tags = {
-    "aia_industry" = "Gaming"
-    "aia_solution" = "Unreal Pixel Streaming TF"
+    "solution" = "Unreal Pixel Streaming TF"
   }
 
   custom_data = filebase64("../scripts/setupMatchMakerVM.ps1")
@@ -309,8 +308,7 @@ resource "azurerm_windows_virtual_machine_scale_set" "vmss" {
   }
 
   tags = {
-    "aia_industry" = "Gaming"
-    "aia_solution" = "Unreal Pixel Streaming TF"
+    "solution" = "Unreal Pixel Streaming TF"
   }
 
   custom_data = filebase64("../scripts/setupBackendVMSS.ps1")
