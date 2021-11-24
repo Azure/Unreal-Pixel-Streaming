@@ -145,7 +145,7 @@ resource "azurerm_windows_virtual_machine" "vm" {
   admin_password           = local.safePWD
   enable_automatic_updates = true
   provision_vm_agent       = true
- 
+
   network_interface_ids = [
     azurerm_network_interface.nic.id,
   ]
@@ -164,6 +164,10 @@ resource "azurerm_windows_virtual_machine" "vm" {
 
   identity {
     type = "SystemAssigned"
+  }
+
+  tags = {
+    "solution" = "Unreal Pixel Streaming TF"
   }
 
   custom_data = filebase64("../scripts/setupMatchMakerVM.ps1")
@@ -268,7 +272,7 @@ resource "azurerm_windows_virtual_machine_scale_set" "vmss" {
 
   enable_automatic_updates = true
   upgrade_mode             = "Automatic"
- 
+
   identity {
     type = "SystemAssigned"
   }
@@ -302,6 +306,11 @@ resource "azurerm_windows_virtual_machine_scale_set" "vmss" {
       }
     }
   }
+
+  tags = {
+    "solution" = "Unreal Pixel Streaming TF"
+  }
+
   custom_data = filebase64("../scripts/setupBackendVMSS.ps1")
 }
 
