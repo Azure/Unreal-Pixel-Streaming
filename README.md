@@ -249,7 +249,7 @@ To deploy the solution, use the steps here:
   - Make sure you have [terraform installed](https://learn.hashicorp.com/tutorials/terraform/install-cli).
 - Do a [git clone](https://git-scm.com/docs/git-clone) on the repo with a depth of 1 or a [git pull](https://git-scm.com/docs/git-pull) if already cloned. **Note:** If you don&#39;t use a --depth 1 it will download the entire Git history for Unreal Engine ( **will take a long time** ).
 ```powershell
-  git clone --depth 1 https://github.com/Azure/UnrealEngine.git
+  git clone --depth 1 https://github.com/Azure/Unreal-Pixel-Streaming.git
 ```
 - Run PowerShell as Administrator (needed for setting PowerShell&#39;s execution policy below) and [Login to Azure](https://docs.microsoft.com/en-us/cli/azure/authenticate-azure-cli) via Azure CLI in the PowerShell window:
 ```powershell
