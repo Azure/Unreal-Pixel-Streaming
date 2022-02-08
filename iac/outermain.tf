@@ -17,7 +17,7 @@ provider "azurerm" {
     }
   }
   ##Pixel Streaming on Azure Epic Games attribution
-  partner_id = "ea1a7ad6-80fb-4205-8ce7-9072fbbe04b5"
+  partner_id = "18a302cf-fbb8-4d50-ae4a-377a95f8048c"
 }
 
 ##############################################################

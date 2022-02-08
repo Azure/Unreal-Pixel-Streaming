@@ -80,7 +80,7 @@ variable "image_offer" {
 
 #Image SKU for the MSFT created Windows 10 VM that both the Matchmaker and Signaling Server use
 variable "image_sku" {
-  default = "nvidia"
+  default = "pixelstreaming_prereqs_nvidia"
 }
 
 #Matchmaker VM login name
