@@ -2,6 +2,8 @@
 
 ### Important
 
+Please be sure to checkout the Azure Marketplace solution for Unreal Engine Pixel Streaming, which simplifies the deployment process and adds things like lifecycle management, a custom metrics dashboard and more: https://azuremarketplace.microsoft.com/marketplace/apps/epicgames.unreal-pixel-streaming?tab=Overview
+
 **Important:** Before cloning this repo you must install the LFS extension at: https://git-lfs.github.com/ and open a git/console command window and type git lfs install to initialize git-lfs. Then in your cloned folder, you need to run "git lfs install". There are large binaries in the repo, thus we needed to enable Git Large File Storage capabilities. Also, due to licensing we are unable to include `\Engine\Binaries\ThirdParty` dlls exported from Unreal for your app in this repo, so you'll need to copy your own `Binaries\` folder into the repo and check them in before the `PixelStreamingDemo.exe` app will run locally and remotely. See the [Unreal 3D App](#unreal-3d-app) section for details of this and other important steps.
 
 **Important:** The main branch of this repo supports 3D Applications targeting Unreal Engine 4.27. If your application uses the previous 4.26 version of Unreal Engine please change the branch to `ue-4.26` or use the `v4.26` release tag.  
