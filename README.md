@@ -331,7 +331,7 @@ If we need to shut down the solution and start it up later, see below for the pr
 
 # Monitoring
 
-Currently automated Azure dashboards aren&#39;t built when deploying the solution; however, outside of regular host metrics like CPU/Memory, some key metrics will be important to monitor in Azure Monitor/Application Insights such as:
+Currently automated Azure dashboards aren&#39;t built when deploying the solution; however, outside of regular host metrics like CPU/Memory, some key metrics will be important to monitor in Azure Monitor Application Insights such as:
 
 - `SSPlayerConnected` – The most key metric to know when a user connected (use Count)
 - `SSPlayerDisconnected` – When a user disconnects from the Signaling Server (use Count)
