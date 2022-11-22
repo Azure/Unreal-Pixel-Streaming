@@ -9,7 +9,7 @@
     "applicationinsights": "1.8.8",
     "cors": "^2.8.5",
     "express": "^4.16.2",
-    "socket.io": "^2.0.4",
+    "socket.io": "^2.5.0",
     "yargs": "^16.2.0"
   }
 }
