@@ -9,7 +9,7 @@
   "dependencies": {
     "applicationinsights": "1.8.8",
     "bcryptjs": "^2.4.3",
-    "express": "^4.16.2",
+    "express": "^4.17.3",
     "express-session": "^1.15.6",
     "helmet": "^3.21.3",
     "passport": "^0.4.0",
