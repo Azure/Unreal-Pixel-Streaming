@@ -8,7 +8,7 @@
     "@azure/ms-rest-nodeauth": "^3.0.6",
     "applicationinsights": "1.8.8",
     "cors": "^2.8.5",
-    "express": "^4.16.2",
+    "express": "^4.17.3",
     "socket.io": "^2.0.4",
     "yargs": "^16.2.0"
   }
